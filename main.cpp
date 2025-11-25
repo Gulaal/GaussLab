@@ -71,20 +71,20 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
 
     for (int c = 0; c < n; c++){
         int maxRow = c;
-        for (int i = 0; i < n; i++){
+        for (int i = c + 1; i < n; i++){
             if (fabs(A[i][c]) > fabs(A[maxRow][c])){
-                maxRow = c;
+                maxRow = i;
             }
         }
 
         swap(A[c], A[maxRow]);
 
-        if (fabs(A[c][c]) < DELTA){
+        if (isZero(A[c][c])){
             continue;
         }
 
         long double coef = A[c][c];
-        for(int j = 0; j <= n; j++){
+        for(int j = c; j <= n; j++){
             A[c][j] /= coef;
         }
 
@@ -95,19 +95,6 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
             } 
         }
         printMatrix(A);
-    }
-
-    for (int i = 0; i < n; i++) {
-        bool allZero = true;
-        for (int j = 0; j < n; j++) {
-            if (!isZero(A[i][j])) {
-                allZero = false;
-                break;
-            }
-        }
-        if (allZero && !isZero(A[i][n])) {
-            throw runtime_error("Система не имеет решений");
-        }
     }
     
     int rankA = 0;
@@ -134,10 +121,6 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
         if (nonZeroRow) rankAB++;
     }
     
-    if (rankA < rankAB) {
-        throw runtime_error("Система имеет бесконечно много решений");
-    }
-
     vector<long double> x(n);
     for (int i = n - 1; i >= 0; i--) {
         x[i] = A[i][n];
@@ -146,35 +129,60 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
         }
     }
 
+    if (rankA < rankAB) {
+        throw runtime_error("Система не имеет решений");
+    }
+    else if (rankA < n) {
+        cout << "Система имеет бесконечно много решений\n";
+    }
+
     return x;
 }
 
 int main(){
-    try {
-        vector<vector<long double>> A1 = {{1, 2}, {1, 2}};
-        vector<long double> b1 = {3, 4};
-        vector<long double> x1 = gauss(A1, b1);
-        cout << "Решение системы 1: ";
-        for (long double val : x1) cout << val << " ";
-        cout << endl;
-    } catch (const exception& e) {
-        cout << "Система 1: " << e.what() << endl;
-    }
+    // try {
+    //     // vector<vector<long double>> A1 = {{3.5, 1, 2.1}, {1, 4, 2.5}, {2.1, 2.5, 4.7}};
+    //     // vector<long double> b1 = {0.56, 0.61, 0.96};
+    //     vector<vector<long double>> A1 = {{0, 0}, {1, 0}};
+    //     vector<long double> b1 = {1, 1};
+    //     vector<long double> x1 = gauss(A1, b1);
+    //     cout << "Решение системы 1: ";
+    //     for (long double val : x1) cout << val << " ";
+    //     cout << endl;
+    // } catch (const exception& e) {
+    //     cout << "Система 1: " << e.what() << endl;
+    // }
 
-    try {
-        vector<vector<long double>> A2 = {{1, 2}, {2, 4}};
-        vector<long double> b2 = {3, 6};
-        vector<long double> x2 = gauss(A2, b2);
-        cout << "Решение системы 2: ";
-        for (long double val : x2) cout << val << " ";
-        cout << endl;
-    } catch (const exception& e) {
-        cout << "Система 2: " << e.what() << endl;
-    }
+    //}
+    // try {
+    //     vector<vector<long double>> A1 = {{1, 2}, {1, 2}};
+    //     vector<long double> b1 = {3, 4};
+    //     vector<long double> x1 = gauss(A1, b1);
+    //     cout << "Решение системы 1: ";
+    //     for (long double val : x1) cout << val << " ";
+    //     cout << endl;
+    // } catch (const exception& e) {
+    //     cout << "Система 1: " << e.what() << endl;
+    // }
+
+    // try {
+    //     vector<vector<long double>> A2 = {{1, 2}, {2, 4}};
+    //     vector<long double> b2 = {3, 6};
+    //     vector<long double> x2 = gauss(A2, b2);
+    //     cout << "Решение системы 2: ";
+    //     for (long double val : x2) cout << val << " ";
+    //     cout << endl;
+    // } catch (const exception& e) {
+    //     cout << "Система 2: " << e.what() << endl;
+    // }
     
     try {
-        vector<vector<long double>> A3 = {{2, 1}, {1, -1}};
-        vector<long double> b3 = {5, 2};
+        vector<vector<long double>> A3 = {
+            {2, 4, 6},
+            {4, 8, 12}, 
+            {6, 12, 18}
+        };
+        vector<long double> b3 = {12, 24, 36};
         vector<long double> x3 = gauss(A3, b3);
         cout << "Решение системы 3: ";
         for (long double val : x3) cout << val << " ";
