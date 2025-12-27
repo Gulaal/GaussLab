@@ -29,7 +29,8 @@ int getColumnWidth(const vector<vector<long double>>& matrix, int col) {
     return maxWidth;
 }
 
-void printMatrix(const vector<vector<long double>>& matrix, const string& title = "") {
+void printMatrix(const vector<vector<long double>>& matrix, const string& title = "") {\
+    cout << '\n';
     if (!title.empty()) {
         cout << title << ":" << endl;
     }
@@ -47,7 +48,7 @@ void printMatrix(const vector<vector<long double>>& matrix, const string& title 
     for (const auto& row : matrix) {
         cout << "| ";
         for (int col = 0; col < row.size(); col++) {
-            cout << setw(colWidths[col]) << fixed << setprecision(6) << row[col] << " ";
+            cout << setw(colWidths[col]) << fixed << setprecision(10) << row[col] << " ";
         }
         cout << "|" << endl;
     }
@@ -76,7 +77,7 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
                 maxRow = i;
             }
         }
-
+        
         swap(A[c], A[maxRow]);
 
         if (isZero(A[c][c])){
@@ -99,6 +100,7 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
     
     int rankA = 0;
     for (int i = 0; i < n; i++) {
+        printMatrix(A);
         bool nonZeroRow = false;
         for (int j = 0; j < n; j++) {
             if (!isZero(A[i][j])) {
@@ -141,10 +143,10 @@ vector<long double> gauss(vector<vector<long double>> A, vector<long double>& B)
 
 int main(){
     // try {
-    //     // vector<vector<long double>> A1 = {{3.5, 1, 2.1}, {1, 4, 2.5}, {2.1, 2.5, 4.7}};
-    //     // vector<long double> b1 = {0.56, 0.61, 0.96};
-    //     vector<vector<long double>> A1 = {{0, 0}, {1, 0}};
-    //     vector<long double> b1 = {1, 1};
+    //     vector<vector<long double>> A1 = {{-0.68, -0.18, 0.02, 0.21}, {0.16, -0.88, -0.14, 0.27}, {0.37, 0.27, -1.02, -0.23}, {0.12, 0.21, -0.18, -0.75}};
+    //     vector<long double> b1 = {-1.83, 0.65, -2.23, 1.13};
+    //     // vector<vector<long double>> A1 = {{0, 0}, {1, 0}};
+    //     // vector<long double> b1 = {1, 1};
     //     vector<long double> x1 = gauss(A1, b1);
     //     cout << "Решение системы 1: ";
     //     for (long double val : x1) cout << val << " ";
@@ -153,7 +155,6 @@ int main(){
     //     cout << "Система 1: " << e.what() << endl;
     // }
 
-    //}
     // try {
     //     vector<vector<long double>> A1 = {{1, 2}, {1, 2}};
     //     vector<long double> b1 = {3, 4};
@@ -178,11 +179,11 @@ int main(){
     
     try {
         vector<vector<long double>> A3 = {
-            {2, 4, 6},
-            {4, 8, 12}, 
-            {6, 12, 18}
+            {1, 2, 3},
+            {4, 5, 6}, 
+            {7, 8, 9}
         };
-        vector<long double> b3 = {12, 24, 36};
+        vector<long double> b3 = {2,5,7};
         vector<long double> x3 = gauss(A3, b3);
         cout << "Решение системы 3: ";
         for (long double val : x3) cout << val << " ";
